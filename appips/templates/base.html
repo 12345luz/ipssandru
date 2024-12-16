@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Mi Proyecto{% endblock %}</title>
+  
+</head>
+<body>
+  <aside class="main-sidebar">
+    {% include 'menu.html' %}
+  </aside>
+  <main class="content-wrapper">
+    {% block content %}
+    <!-- Aquí irá el contenido específico de cada página -->
+    {% endblock %}
+  </main>
+</body>
+</html>

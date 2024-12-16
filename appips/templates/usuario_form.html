@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Crear Usuario - Mi Proyecto
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card-header">
+    <h3 class="card-title">Formulario Usuario</h3>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" class="form-horizontal">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <div class="row">
+          <!-- Tipo de Identificación -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.tipo_identificacion.id_for_label }}" class="form-label">Tipo de Identificación</label>
+              {{ form.tipo_identificacion.errors }}
+              {{ form.tipo_identificacion }}
+            </div>
+          </div>
+
+          <!-- Número de Identificación -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.numero_identificacion.id_for_label }}" class="form-label">Número de Identificación</label>
+              {{ form.numero_identificacion.errors }}
+              {{ form.numero_identificacion }}
+            </div>
+          </div>
+
+          <!-- Primer Apellido -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.primer_apellido.id_for_label }}" class="form-label">Primer Apellido</label>
+              {{ form.primer_apellido.errors }}
+              {{ form.primer_apellido }}
+            </div>
+          </div>
+
+          <!-- Segundo Apellido -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.segundo_apellido.id_for_label }}" class="form-label">
+                Segundo Apellido
+                <i 
+                  class="fas fa-exclamation-circle text-warning" 
+                  data-bs-toggle="popover" 
+                  data-bs-trigger="click" 
+                  data-bs-placement="right" 
+                  data-bs-content="Si el usuario no tiene segundo apellido o no se tiene este dato, registre NONE en mayúscula sostenida." 
+                  style="cursor: pointer;" 
+                  title="Información importante">
+                </i>
+              </label>
+              {{ form.segundo_apellido.errors }}
+              {{ form.segundo_apellido }}
+            </div>
+          </div>
+
+          <!-- Primer Nombre -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.primer_nombre.id_for_label }}" class="form-label">Primer Nombre</label>
+              {{ form.primer_nombre.errors }}
+              {{ form.primer_nombre }}
+            </div>
+          </div>
+
+          <!-- Segundo Nombre -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.segundo_nombre.id_for_label }}" class="form-label">Segundo Nombre
+                <i 
+                class="fas fa-exclamation-circle text-warning" 
+                data-bs-toggle="popover" 
+                data-bs-trigger="click" 
+                data-bs-placement="right" 
+                data-bs-content="Si el usuario no tiene segundo nombre o no se tiene este dato, registre NONE en mayúscula sostenida." 
+                style="cursor: pointer;" 
+                title="Información importante">
+              </i>
+              </label>
+              {{ form.segundo_nombre.errors }}
+              {{ form.segundo_nombre }}
+            </div>
+          </div>
+
+          <!-- Fecha de Nacimiento -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="id_fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+              {{ form.fecha_nacimiento.errors }}
+              <input type="date" id="id_fecha_nacimiento" name="fecha_nacimiento" class="form-control" value="{{ form.fecha_nacimiento.value|default:'' }}">
+            </div>
+          </div>
+
+          <!-- Sexo -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.sexo.id_for_label }}" class="form-label">Sexo</label>
+              {{ form.sexo.errors }}
+              {{ form.sexo }}
+            </div>
+          </div>
+
+          <!-- Pertenencia Étnica -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.codigo_pertenencia_etnica.id_for_label }}" class="form-label">Pertenencia Étnica</label>
+              {{ form.codigo_pertenencia_etnica.errors }}
+              {{ form.codigo_pertenencia_etnica }}
+            </div>
+          </div>
+
+          <!-- Ocupación -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.codigo_ocupacion.id_for_label }}" class="form-label">Ocupación</label>
+              {{ form.codigo_ocupacion.errors }}
+              {{ form.codigo_ocupacion }}
+            </div>
+          </div>
+
+          <!-- País -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.codigo_pais.id_for_label }}" class="form-label">País</label>
+              {{ form.codigo_pais.errors }}
+              {{ form.codigo_pais }}
+            </div>
+          </div>
+
+          <!-- Nivel Educativo -->
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="{{ form.codigo_nivel_educativo.id_for_label }}" class="form-label">Nivel Educativo</label>
+              {{ form.codigo_nivel_educativo.errors }}
+              {{ form.codigo_nivel_educativo }}
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+          <button type="submit" class="btn btn-primary btn-lg">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Inicializar popovers al cargar
+  document.addEventListener('DOMContentLoaded', function () {
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl);
+    });
+  });
+</script>
+{% endblock %}

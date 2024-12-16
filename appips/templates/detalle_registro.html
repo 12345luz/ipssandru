@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Registro</title>
+</head>
+<body>
+    <h1>Detalles del Usuario y Registro</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Información del Usuario (solo lectura) -->
+        <fieldset disabled>
+            <legend>Información del Usuario</legend>
+            <label for="numero_identificacion">Identificación:</label>
+            <input type="text" id="numero_identificacion" value="{{ usuario.numero_identificacion }}" readonly><br>
+
+            <label for="primer_nombre">Primer Nombre:</label>
+            <input type="text" id="primer_nombre" value="{{ usuario.primer_nombre }}" readonly><br>
+
+            <label for="segundo_nombre">Segundo Nombre:</label>
+            <input type="text" id="segundo_nombre" value="{{ usuario.segundo_nombre }}" readonly><br>
+
+            <label for="primer_apellido">Primer Apellido:</label>
+            <input type="text" id="primer_apellido" value="{{ usuario.primer_apellido }}" readonly><br>
+
+            <label for="segundo_apellido">Segundo Apellido:</label>
+            <input type="text" id="segundo_apellido" value="{{ usuario.segundo_apellido }}" readonly><br>
+
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="text" id="fecha_nacimiento" value="{{ registro.id_usuario.fecha_nacimiento }}" readonly><br>
+
+            <!-- Mostrar la edad -->
+            <label for="edad">Edad:</label>
+            <input type="text" id="edad" value="{{ edad }}" readonly><br>
+        </fieldset>
+
+        <!-- Información del Registro (solo lectura) -->
+        <fieldset disabled>
+            <legend>Información del Registro</legend>
+            <label for="consecutivo">Consecutivo:</label>
+            <input type="text" id="consecutivo_registro" value="{{ registro.consecutivo_registro }}" readonly><br>
+
+            <label for="tipo_registro">Tipo de Registro:</label>
+            <input type="text" id="tipo_registro" value="{{ registro.tipo_registro }}" readonly><br>
+
+            <label for="codigo_ips_primaria">Código de Habilitación IPS Primaria:</label>
+            <input type="text" id="codigo_ips_primaria" value="{{ registro.codigo_habilitacion_ips_primaria }}" readonly><br>
+        </fieldset>
+
+        <fieldset id="fieldset-agudeza-visual" >
+            <legend>Agudeza Visual</legend>
+            {% if agudeza_visual %}
+                <p>Ojo izquierdo: {{ agudeza_visual.agudeza_visual_lejana_ojo_izquierdo }}</p>
+                <p>Ojo derecho: {{ agudeza_visual.agudeza_visual_lejana_ojo_derecho }}</p>
+                <p>Fecha de valoración: {{ agudeza_visual.fecha_valoracion_agudeza_visual }}</p>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_agudeza_visual.as_p }}
+                    <button type="submit">Guardar Agudeza Visual</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+        </fieldset>
+        
+        <fieldset id="form_anticoncepción" >
+            <legend>Anticoncepción</legend>
+            {% if anticoncepcion %}
+                <p>Fecha de atención: {{ anticoncepcion.fecha_atencion_asesoria_anticoncep }}</p>
+                <p>Método suministrado: {{ anticoncepcion.suministro_metodo_anticoceptivo }}</p>
+                <p>Fecha de suministro: {{ anticoncepcion.fecha_sumistro_ant }}</p>
+                
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_anticoncepcionas.as_p }}
+                    <button type="submit">Guardar Anticoncepción</button>
+                </form>
+            {% endif %}
+        
+        </fieldset>
+
+        <fieldset>
+            <legend>CaCervix</legend>
+            {% if ca_cervix %}
+                <p>Tratamiento Ablativo/Escisión: {{ ca_cervix.tratamiento_ablativo_escision }}</p>
+                <p>Tamizaje de Cáncer de Cuello Uterino: {{ ca_cervix.tamizaje_cancer_cuello_uterino }}</p>
+                <p>Fecha de Tamizaje: {{ ca_cervix.fecha_tamizaje_cancer_cuello_uterino }}</p>
+                <p>Resultado del Tamizaje: {{ ca_cervix.resultado_tamizaje_cancer_cuello_uterino }}</p>
+                <p>Calidad de la Muestra: {{ ca_cervix.calidad_muestra_citologia }}</p>
+                <p>Fecha de Colposcopia: {{ ca_cervix.fecha_colposcopia }}</p>
+                <p>Resultado de la Biopsia: {{ ca_cervix.resultado_biopsia_cervicouterina }}</p>
+            {% else %}
+            <form method="post">
+                    {% csrf_token %}
+                {{ form_ca_cervix.as_p }}
+                <button type="submit">Guardar</button>
+            </form>
+            {% endif %}
+        </fieldset>
+
+        <fieldset id="form_ca_colon" >
+            <legend>Cancer de colon</legend>
+            {% if ca_colon %}
+                <p>Resultado de la prueba de sangre oculta en materia fecal: {{ ca_colon.resultado_prueba_sangre_oculta_mf }}</p>
+                <p>Resultado de colonoscopia tamizaje: {{ ca_colon.resultado_colonoscopia_tamizaje}}</p>
+                <p>Fecha de realización colonoscopia tamizaje: {{ ca_colon.fecha_colonoscopia_tamizaje }}</p>
+                <p>Fecha de la prueba sangre oculta en materia fecal: {{ ca_colon.fecha_prueba_sangre_oculta}}</p>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_ca_colon.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        
+        </fieldset>
+
+        <fieldset id="form_ca_prostata" >
+            <legend>Cancer de prostata</legend>
+            {% if ca_prostata %}
+                <p>Resultado del tacto rectal: {{ ca_prostata.resultado_tacto_rectal }}</p>
+                <p>Fecha del tacto rectal: {{ ca_prostata.fecha_tacto_rectal}}</p>
+                <p>Fecha de toma PSA: {{ ca_prostata.fecha_toma_psa }}</p>
+                <p>Resultado de PSA: {{ ca_prostata.resultado_psa}}</p>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_ca_prostata.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        
+        </fieldset>
+      
+        <fieldset id="form_ca_mama" >
+            <legend>Cancer de mama</legend>
+            {% if ca_mama %}
+                <p>Fecha de toma de mamografía: {{ ca_mama.fecha_toma_mamografia }}</p>
+                <p>Resultado de mamografía: {{ ca_mama.resultado_mamografia}}</p>
+                <p>Fecha de toma biopsia de mama: {{ ca_mama.fecha_toma_biopsia_mama }}</p>
+                <p>Fecha de resultado biopsia de mama: {{ ca_mama.fecha_resultado_biopsia_mama}}</p>
+                <p>Resultado de biopsia de mama: {{ ca_mama.resultado_biopsia_mama}}</p>
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_ca_mama.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        
+        </fieldset>
+
+        <fieldset id="form_salud_bucal" >
+            <legend>Salud Bucal</legend>
+            {% if salud_bucal %}
+                <p>Fecha de atención en salud bucal por profesional en odontología: {{ salud_bucal.fecha_atencion_salud_bucal }}</p>
+                <p>COP por persona: {{ salud_bucal.cop_por_persona}}</p>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_salud_bucal.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+        <fieldset id="form_gestacion" >
+            <legend>Gestacion</legend>
+            {% if gestacion %}
+                <p>: {{ gestacion.gestante }}</p>
+                <p>: {{ gestacion.acido_folico_preconcepcional}}</p>
+                <p>: {{ gestacion.fecha_probable_parto}}</p>
+                <p>: {{ gestacion.clasificacion_riesgo_gestacional}}</p>
+                <p>: {{ gestacion.fecha_atencion_parto}}</p>
+                <p>: {{ gestacion.fecha_salida_atencion_parto}}</p>
+                <p>: {{ gestacion.fecha_primera_consulta_prenatal}}</p>
+                <p>: {{ gestacion.fecha_ultimo_control_prenatal}}</p>
+                <p>: {{ gestacion.suministro_acido_folico}}</p>
+                <p>: {{ gestacion.suministro_sulfato_ferroso}}</p>
+                <p>: {{ gestacion.suministro_carbonato_calcio}}</p>
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_gestacion.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+        <fieldset id="form_gestacion_menores" >
+            <legend>formulario gestacion menores hasta siente meses</legend>
+            {% if  gestacion_menores %}
+                <p>Fecha de atención: {{ gestacion_menores.fecha_atencion_promocion_apoyo_lactancia }}</p>
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_gestacion_menores.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+
+        <fieldset id="form_no_reporte" >
+            <legend>formulario No aplica para el reporte</legend>
+            {% if  no_reporte %}
+
+            <p>Sífilis Gestacional o congénita:{{ no_reporte.sifilis_gestacional_congenita }}</p>
+            <p>Hipotiroidismo Congénito:{{ no_reporte.ipotiroidismo_congenito }}</p>
+            <p>Lepra :{{ no_reporte.lepra }}</p>
+            <p>Obesidad o Desnutrición Proteico Calórica :{{ no_reporte.obesidad_desnutricion }}</p>
+            <p>Enfermedad Mental :{{ no_reporte.enfermedad_mental }}</p>
+            <p>Cáncer de Cérvix :{{ no_reporte.cancer_cervix }}</p>
+            <p>DPT menores de 5 años :{{ no_reporte.dpt_menores }}</p>
+            <p>Neumococo :{{ no_reporte.neumococo }}</p>
+            <p>Consulta de Psicología : {{ no_reporte.consulta_psicologia }}</p>      
+            <p>Preservativos entregados a pacientes con ITS:{{ no_reporte.preservativos }}</p>
+            <p>Fecha Hemoglobina Glicosilada: {{ no_reporte.fecha_hemoglobina }}</p>
+            <p>Tratamiento para Sífilis gestacional :{{ no_reporte.tratamiento_sifilis_gestacional}}</p>
+            <p>Tratamiento para Sífilis Congénita:{{ no_reporte.tratamiento_sifilis_congenita }}</p>
+
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_no_reporte.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+
+        <fieldset id="form_primera_infacia" >
+            <legend>formulario primera infacia</legend>
+            {% if  primera_infacia %}
+
+            <p>Suministro de  fortificación casera en la primera infancia (6 a 23 meses):{{ primera_infacia.Suministro_fortificacion_casera }}</p>
+            <p>Suministro de vitamina A en la primera infancia (24 a 60 meses):{{ primera_infacia.suministro_de_vitamina_A }}</p>
+            <p>Suministro de hierro en la primera Infancia (24 a 59 meses):{{ primera_infacia.suministro_hierro }}</p>
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_primera_infacia.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+        <fieldset id="form_recien_nacido" >
+            <legend>formulario recien nacido</legend>
+            {% if  recien_nacido %}
+
+            <p>Resultado de tamizaje auditivo neonatal:{{ recien_nacido.resultado_tamizaje_auditivo_neonatal }}</p>
+            <p>Resultado de tamizaje visual neonatal:{{ recien_nacido.resultado_tamizaje_visual_neonatal  }}</p>
+            <p>Resultado de tamización con oximetría pre y post ductal:{{ recien_nacido.resultado_oximetria_pre_post_ductal }}</p>
+            <p>Fecha de tamización con oximetría pre y post ductal:{{ recien_nacido.fecha_oximetria_pre_post_ductal }}</p>
+            <p>Fecha de tamización con oximetría pre y post ductal:{{ recien_nacido.fecha_tamizaje_auditivo_neonatal  }}</p>
+            <p>Fecha de tamizaje auditivo neonatal:{{ recien_nacido.fecha_tamizaje_visual_neonatal  }}</p>
+            <p>Fecha de tamizaje visual neonatal:{{ recien_nacido.fecha_tsh_neonatal  }}</p>
+            <p>Fecha de TSH neonatal:{{ recien_nacido.resultado_tsh_neonatal  }}</p>
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_recien_nacido.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+        <fieldset id="form_riesgo_cardiovascular" >
+            <legend>Formulario riesgo cardiovascular</legend>
+            {% if riesgo_cardiovascular%}
+
+            <p>Consumo de tabaco:{{ riesgo_cardiovascular.consumo_tabaco}}</p>
+            <p>Resultado de glicemia basal:{{ riesgo_cardiovascular.resultado_glicemia_basal}}</p>
+            <p>Fecha de toma LDL:{{ riesgo_cardiovascular.fecha_toma_ldl}}</p>
+            <p>Resultado de LDL:{{ riesgo_cardiovascular.resultado_ldl}}</p>
+            <p>Resultado de HDL:{{ riesgo_cardiovascular.resultado_hdl }}</p>
+            <p>Fecha de toma triglicéridos:{{ riesgo_cardiovascular.fecha_toma_trigliceridos }}</p>
+            <p>Resultado de triglicéridos:{{ riesgo_cardiovascular.resultado_trigliceridos }}</p>
+            <p>Fecha de toma hemoglobina:{{ riesgo_cardiovascular.fecha_toma_hemoglobina }}</p>
+            <p>Resultado de hemoglobina:{{ riesgo_cardiovascular.resultado_hemoglobina}}</p>
+            <p>Fecha de toma glicemia basal:{{ riesgo_cardiovascular.fecha_toma_glicemia_basal}}</p>
+            <p>Fecha de toma creatinina:{{ riesgo_cardiovascular.fecha_toma_creatinina}}</p>
+            <p>Resultado de creatinina:{{ riesgo_cardiovascular.resultado_creatinina }}</p>
+            <p>Fecha de toma HDL:{{ riesgo_cardiovascular.fecha_toma_hdl}}</p>
+            <p>Clasificación del riesgo cardiovascular:{{ riesgo_cardiovascular.clasificacion_riesgo_cardiovascular }}</p>
+            <p>Clasificación del riesgo metabólico:{{ riesgo_cardiovascular.clasificacion_riesgo_metabolico}}</p>
+
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_riesgo_cardiovascular.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+        <fieldset id="form_test_o_12" >
+            <legend>Formulario Test 0 a 12 años</legend>
+            {% if test_o_12%}
+
+            <p>Resultado de tamizaje VALE:{{ test_o_12.resultado_tamizaje_vale}}</p>
+            <p>Fecha de tamizaje VALE:{{ test_o_12.fecha_tamizaje_vale}}</p>
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_test_o_12.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+        <fieldset id="form_test_o_7" >
+            <legend>Formulario Test 0 a 7 años</legend>
+            {% if test_o_7%}
+
+            <p>Resultado de escala abreviada de desarrollo área de motricidad gruesa:{{ test_o_7.resultado_motricidad_gruesa}}</p>
+            <p>Resultado de escala abreviada de desarrollo área de motricidad finoadaptativa:{{ test_o_7.resultado_motricidad_finoadaptativa}}</p>
+            <p>Resultado de escala abreviada de desarrollo área personal social:{{ test_o_7.resultado_personal_social}}</p>
+            <p>Resultado de escala abreviada de desarrollo área de audición y lenguaje:{{ test_o_7.resultado_audicion_lenguaje}}</p>
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_test_o_7.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+        
+
+        <fieldset id="form_test_mayores_60" >
+            <legend>Formulario Test Mayores de 60</legend>
+            {% if test_mayores_60%}
+
+            <p>Resultado de escala abreviada de desarrollo área de motricidad gruesa:{{ test_mayores_60.test_vejez}}</p>
+
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_test_mayores_60.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+
+        <fieldset id="form_toda_poblacion" >
+            <legend>Formulario Toda la población </legend>
+            {% if toda_poblacion %}
+
+            <p>Fecha del peso :{{ toda_poblacion.fecha_peso}}</p>
+            <p>Peso en Kilogramos :{{ toda_poblacion.peso}}</p>
+            <p>Fecha de la talla :{{ toda_poblacion.fecha_talla}}</p>
+            <p>Talla en centímetros :{{ toda_poblacion.talla}}</p>
+            <p>Resultado de tamizaje para hepatitis C:{{ toda_poblacion.resultado_tamizaje_hepatitis_c}}</p>
+            <p>Fecha de consulta de valoración integral:{{ toda_poblacion.fecha_valoracion_integral}}</p>
+            <p>Fecha de antígeno de superficie hepatitis B :{{ toda_poblacion.fecha_antigeno_hepatitis_b}}</p>
+            <p>Resultado de antígeno de superficie hepatitis B :{{ toda_poblacion.resultado_antigeno_hepatitis_b}}</p>
+            <p>Fecha de toma de prueba tamizaje para sífilis:{{ toda_poblacion.fecha_tamizaje_sifilis}}</p>
+            <p>Resultado de prueba tamizaje para sífilis:{{ toda_poblacion.resultado_tamizaje_sifilis}}</p>
+            <p>Fecha de toma de prueba para VIH:{{ toda_poblacion.fecha_prueba_vih}}</p>
+            <p>Resultado de prueba para VIH:{{ toda_poblacion.resultado_prueba_vih}}</p>
+            <p>Fecha de toma  de tamizaje hepatitis C:{{ toda_poblacion.fecha_tamizaje_hepatitis_c}}</p>
+
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_toda_poblacion.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+
+        <fieldset id="form_tuberculosis" >
+            <legend>Formulario Tuberculosis</legend>
+            {% if tuberculosis %}
+
+            <p>Sintomático respiratorio:{{ tuberculosis.Sintomatico_respiratorio}}</p>
+            <p>Fecha de toma de baciloscopia diagnóstico:{{ tuberculosis.Fecha_baciloscopia}}</p>
+            <p>Resultado de baciloscopia diagnóstico:{{ tuberculosis.Resultado_baciloscopia}}</p>
+            
+
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_tuberculosis.as_p }}
+                    <button type="submit">Guardar</button>
+                </form>
+            {% endif %}
+        </fieldset>
+
+
+
+</body>
+
+
+</html>

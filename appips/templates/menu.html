@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Principal</title>
+  <!-- Cargar Bootstrap y Font Awesome desde CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+  
+  <!-- Estilos personalizados -->
+  <style>
+    /* Estilos del menú */
+    .nav-sidebar {
+      background-color: #343a40;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .nav-sidebar .nav-link {
+      color: #adb5bd;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-sidebar .nav-link:hover {
+      background-color: #495057;
+      color: #ffffff;
+    }
+
+    .nav-sidebar .nav-link.active {
+      background-color: #007bff;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .nav-sidebar .nav-icon {
+      margin-right: 8px;
+    }
+
+    /* Submenú */
+    .nav-treeview {
+      padding-left: 20px;
+    }
+
+    .nav-treeview .nav-link {
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Menú Principal -->
+  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <!-- Opción de Usuario -->
+    <li class="nav-item has-treeview">
+      <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-users"></i>
+        <p>
+          Usuarios
+          <i class="right fas fa-angle-left"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <!-- Submenú: Crear Usuario -->
+        <li class="nav-item">
+          <a href="{% url 'crear_usuario' %}" class="nav-link">
+            <i class="fas fa-user-plus nav-icon"></i>
+            <p>Crear Usuario</p>
+          </a>
+        </li>
+        <!-- Submenú: Listar Usuarios -->
+        <li class="nav-item">
+          <a href="{% url 'listar_usuarios' %}" class="nav-link">
+            <i class="fas fa-search nav-icon"></i>
+            <p>Buscar y Listar</p>
+          </a>
+        </li>
+        <!-- Submenú: Generar Reporte -->
+        <li class="nav-item">
+          <a href="{% url 'exportar_reporte' %}" class="nav-link">
+            <i class="fas fa-file-download nav-icon"></i>
+            <p>Generar Reporte</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- Scripts necesarios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script personalizado (opcional para mejorar interactividad) -->
+  <script>
+    $(document).ready(function () {
+      // Alternar clase 'active' en los enlaces
+      $('.nav-link').on('click', function () {
+        $('.nav-link').removeClass('active');
+        $(this).addClass('active');
+      });
+    });
+  </script>
+</body>
+</html>

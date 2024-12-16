@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Buscar y Listar Usuarios</h1>
+
+<!-- Formulario de búsqueda -->
+<form method="get" action="{% url 'listar_usuarios' %}">
+    {% csrf_token %}
+    <label for="criterio">Criterio de búsqueda:</label>
+    <input type="text" name="criterio" id="criterio" value="{{ criterio }}" placeholder="Nombre o identificación" required>
+    <button type="submit">Buscar</button>
+</form>
+
+<!-- Tabla de usuarios -->
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Identificación</th>
+            <th>Nombre Completo</th>
+            <th>Tipo de Documento</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if resultados %}
+            {% for usuario in resultados %}
+            <tr>
+                <td>{{ usuario.numero_identificacion }}</td>
+                <td>{{ usuario.primer_nombre }} {{ usuario.segundo_nombre }} {{ usuario.primer_apellido }} {{ usuario.segundo_apellido }}</td>
+                <td>{{ usuario.get_tipo_identificacion_display }}</td>
+                <td>
+                    <button class="btn btn-primary crear-registro" data-id="{{ usuario.numero_identificacion }}">
+                        Crear Registro
+                    </button>
+                    {% if usuario.registro_set.exists %}
+                    <a href="{% url 'detalle_registro' usuario.registro_set.first.pk %}" class="btn btn-info">Editar Registro</a>
+                    {% else %}
+                    <span>No hay registro</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="4">
+                {% if criterio %}
+                No se encontraron usuarios con el criterio ingresado.
+                {% else %}
+                No hay usuarios registrados.
+                {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<!-- Mensaje flotante -->
+<div id="mensaje-flotante"></div>
+{% endblock %}
+
+<script>
+    // Script para manejar creación de registros
+    document.querySelectorAll('.crear-registro').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const usuarioId = this.getAttribute('data-id');
+
+            // Realiza una solicitud AJAX
+            fetch(`/crear-registro/${usuarioId}/`, {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(data => {
+                const mensaje = document.getElementById('mensaje-flotante');
+                mensaje.textContent = data.mensaje;
+
+                mensaje.className = '';
+                mensaje.classList.add(data.success ? 'mensaje-exito' : 'mensaje-error');
+                mensaje.style.display = 'block';
+
+                setTimeout(() => {
+                    mensaje.style.display = 'none';
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
