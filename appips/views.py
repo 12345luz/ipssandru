@@ -94,7 +94,7 @@ class DetalleRegistroView(DetailView):
         if agudeza_visual:
             context['agudeza_visual'] = agudeza_visual
         else:
-            context['form_agudeza_visual'] = AgudezaVisualForm()
+            context['form_agudeza_visual'] = AgudezaVisualForm(usuario=usuario)
 
         # Agregar Anticoncepción
         anticoncepcion = Anticoncepcion.objects.filter(consecutivo_registro=registro).first()
@@ -433,54 +433,54 @@ def generar_reporte_excel(request):
     ws = wb.active
     ws.title = "Reporte Usuarios"
 
-    # Encabezados del reporte
+# Encabezados del reporte
     encabezados = [
 
-        #Datos registro
+#Datos registro
 
         "Tipo de registro", "Consecutivo de registro", "Código de habilitación IPS primaria",
 
-        #Datos usuarios
+#Datos usuarios
 
         "Tipo de Identificación","Número de Identificación  del usuario", "Primer Apellido del usuario",
         "Segundo Apellido del usuario", "Primer Nombre del usuario", "Segundo Nombre del usuario", "Fecha de Nacimiento",
         "Sexo", "Código Pertenencia Étnica", "Código Ocupación", "Código País","Código Nivel Educativo",
-        # Campos de Gestacion
+# Campos de Gestacion
     
         "Gestante", "Ácido Fólico Preconcepcional", "Fecha Probable de Parto",
         "Clasificación de Riesgo Gestacional", "Fecha de atención parto o cesárea ", 
         " Fecha de salida de atención parto o cesárea", "Fecha Primera Consulta Prenatal",
         "Fecha de último control prenatal de seguimiento", "Suministro Ácido Fólico", "Suministro de sulfato ferroso en el control prenatal durante el periodo reportado","Suministro de carbonato de calcio en el control prenatal durante el periodo reportado",
         
-        # Campos de Agudeza Visual
+# Campos de Agudeza Visual
         "Agudeza Visual lejana Izquierdo", "Agudeza Visual lejana Derecho", "Fecha Valoración de Agudeza Visual",
-        #Campos de Anticoncepcion 
+ #Campos de Anticoncepcion 
         "Fecha de atención en salud para la asesoría en anticoncepción","Suministro de método anticonceptivo","Fecha de suministro de método anticonceptivo",
-        # Campos de Ca_Cervix
+ # Campos de Ca_Cervix
         "Tamizaje del cáncer de cuello uterino","Tratamiento ablativo o de escisión posterior a la realización de la técnica de inspección visual (Crioterapia o LETZ)",
         "Fecha de tamizaje cáncer de cuello uterino","Resultado tamizaje cáncer de cuello uterino","Calidad en la muestra de citología cervicouterina","Código de habilitación IPS donde se realiza  tamizaje cáncer de cuello uterino","Fecha de colposcopia",
         "Fecha de biopsia cervicouterina","Resultado de biopsia cervicouterina" ,
 
-        #Campos Gestacion menenores hasta 7 meses
+ #Campos Gestacion menenores hasta 7 meses
 
         "Fecha de atención en salud para la promoción y apoyo de la lactancia materna",
 
-       #Campos No reporte
+   #Campos No reporte
   
         "Sífilis Gestacional o congénita","Lepra","Obesidad o Desnutrición Proteico Calórica","Enfermedad Mental",
         "Cáncer de Cérvix","DPT menores de 5 años","Neumococo","Consulta de Psicología","Preservativos entregados a pacientes con ITS","Fecha de hemoglobina","Tratamiento de sifilis gestacional",
         "Tratamiento de sifilis congenita",
 
-        # Campos de Primera_Infancia
+  # Campos de Primera_Infancia
         "Suministro de  fortificación casera en la primera infancia (6 a 23 meses)",
         "Suministro de vitamina A en la primera infancia (24 a 60 meses)","Suministro de hierro en la primera Infancia (24 a 59 meses)",
 
-         # Campos Recien_Nacidos
+   # Campos Recien_Nacidos
        "Resultado de tamizaje auditivo neonatal","Resultado de tamizaje visual  neonatal",
         "Resultado de tamización con oximetría pre y post ductal","Fecha de tamización con oximetría pre y post ductal","Fecha de tamizaje auditivo neonatal","Fecha de tamizaje visual neonatal",
          "Fecha de TSH neonatal","Resultado de TSH neonatal",
 
-        # Datos Riesgo_Cardiovascular
+    # Datos Riesgo_Cardiovascular
         "Consumo de tabaco",
         "Resultado de glicemia basal",
         "Fecha de toma LDL",
@@ -497,29 +497,29 @@ def generar_reporte_excel(request):
         "Clasificación del riesgo metabólico",
         "Fecha de toma triglicéridos",
 
-        #Campos tamizaje  0 a 12 años
+    #Campos tamizaje  0 a 12 años
         "Resultado de tamizaje VALE","Fecha de tamizaje VALE",
 
-        #Campos tamizaje  0 a 7 años
+    #Campos tamizaje  0 a 7 años
         "Resultado de escala abreviada de desarrollo área de motricidad gruesa",
         "Resultado de escala abreviada de desarrollo área de motricidad finoadaptativa","Resultado de escala abreviada de desarrollo área personal social",
         "Resultado de escala abreviada de desarrollo área de motricidad audición lenguaje",
 
-        #Campos Test Vejez mayores de 60 años           ###Pendiente consultar  si corresponde
+    #Campos Test Vejez mayores de 60 años           
         "Resultado de la prueba mini-mental state",
 
-        # Campos Toda_poblacion
+    # Campos Toda_poblacion
         "Fecha del peso ","Peso en Kilogramos ","Fecha de la talla","Talla en centímetros ","Resultado de tamizaje para hepatitis C","Fecha de consulta de valoración integral",
         "Fecha de antígeno de superficie hepatitis B (Toda la población)", "Resultado de antígeno de superficie hepatitis B (Toda la población)",
         "Fecha de toma de prueba tamizaje para sífilis","Resultado de prueba tamizaje para sífilis","Fecha de toma de prueba para VIH","Resultado de prueba para VIH",
         "Fecha de toma  de tamizaje hepatitis C",
         
-        #Campos tuberculosis
+    #Campos tuberculosis
         "Sintomático respiratorio (toda la población)",
         "Fecha de toma de baciloscopia diagnóstico",
         "Resultado de baciloscopia diagnóstico",
 
-        #campos cancer de colon
+    #campos cancer de colon
 
         "Resultado de la prueba sangre oculta en materia fecal (tamizaje ", 
         "Resultado de colonoscopia tamizaje",
@@ -544,7 +544,7 @@ def generar_reporte_excel(request):
         celda.font = Font(bold=True)
 
     # Obtener datos de Usuario, Gestacion y AgudezaVisual
-    usuarios = Usuario.objects.all()
+    usuarios = Usuario.objects.filter(registro__isnull=False).distinct()
 
     for row_num, usuario in enumerate(usuarios, 2):
         # Datos de Registro
@@ -558,8 +558,7 @@ def generar_reporte_excel(request):
             ws.cell(row=row_num, column=2, value="N/A")
             ws.cell(row=row_num, column=3, value="N/A")
 
-
-        # Escribir datos básicos de Usuario
+    # Escribir datos básicos de Usuario
 
         ws.cell(row=row_num, column=4, value=usuario.tipo_identificacion)
         ws.cell(row=row_num, column=5, value=usuario.numero_identificacion)
@@ -574,7 +573,7 @@ def generar_reporte_excel(request):
         ws.cell(row=row_num, column=14, value=usuario.codigo_pais)  # Placeholder para país si no está implementado
         ws.cell(row=row_num, column=15, value=usuario.codigo_nivel_educativo)
 
-        # Datos de Gestación
+    # Datos de Gestación
         gestacion = Gestacion.objects.filter(consecutivo_registro__id_usuario=usuario).first()
         ws.cell(row=row_num, column=16, value=gestacion.gestante if gestacion else "N/A")
         ws.cell(row=row_num, column=17, value=gestacion.acido_folico_preconcepcional if gestacion else "N/A")
@@ -588,13 +587,13 @@ def generar_reporte_excel(request):
         ws.cell(row=row_num, column=25, value=gestacion.suministro_sulfato_ferroso if gestacion else "N/A")
         ws.cell(row=row_num, column=26, value=gestacion.suministro_carbonato_calcio if gestacion else "N/A")
 
-        # Datos de Agudeza Visual
+    # Datos de Agudeza Visual
         agudeza_visual = AgudezaVisual.objects.filter(consecutivo_registro__id_usuario=usuario).first()
         ws.cell(row=row_num, column=27, value=agudeza_visual.agudeza_visual_lejana_ojo_izquierdo if agudeza_visual else "N/A")
         ws.cell(row=row_num, column=28, value=agudeza_visual.agudeza_visual_lejana_ojo_derecho if agudeza_visual else "N/A")
         ws.cell(row=row_num, column=29, value=agudeza_visual.fecha_valoracion_agudeza_visual.strftime('%Y-%m-%d') if agudeza_visual and agudeza_visual.fecha_valoracion_agudeza_visual else "N/A")
 
-        # Datos de Anticoncepcion
+    # Datos de Anticoncepcion
 
         anticoncepcion = Anticoncepcion.objects.filter(consecutivo_registro__id_usuario=usuario).first()
 
@@ -602,7 +601,7 @@ def generar_reporte_excel(request):
         ws.cell(row=row_num, column=31, value=anticoncepcion.suministro_metodo_anticoceptivo if anticoncepcion else "N/A")
         ws.cell(row=row_num, column=32, value=anticoncepcion.fecha_sumistro_ant if anticoncepcion else "N/A")
 
-        # Datos de Ca_Cervix
+    # Datos de Ca_Cervix
 
         ca_cervix = Ca_Cervix.objects.filter(consecutivo_registro__id_usuario=usuario).first()
 
@@ -616,13 +615,11 @@ def generar_reporte_excel(request):
         ws.cell(row=row_num, column=40, value=ca_cervix.fecha_biopsia_cervicouterina if ca_cervix else "N/A")
         ws.cell(row=row_num, column=41, value=ca_cervix.resultado_biopsia_cervicouterina if ca_cervix else "N/A")
 
-
-      #Datos Gestación menores hasta 7 meses
+    #Datos Gestación menores hasta 7 meses
 
         gestacion_menores=Gestacion_menores_hasta_siente_meses.objects.filter(consecutivo_registro__id_usuario=usuario).first()
 
         ws.cell(row=row_num, column=42, value=gestacion_menores.fecha_atencion_promocion_apoyo_lactancia   if  ca_cervix else "N/A")
-
 
     #Datos No_Reporte
 
@@ -686,12 +683,10 @@ def generar_reporte_excel(request):
 
     test_0_12= Test_0_12.objects.filter(consecutivo_registro__id_usuario=usuario).first()
 
-
     ws.cell(row=row_num, column=81, value=test_0_12.resultado_tamizaje_vale if  test_0_12 else "N/A")
     ws.cell(row=row_num, column=82, value=test_0_12.fecha_tamizaje_vale if  test_0_12 else "N/A")
 
-
-     # Datos Test_0_7
+    # Datos Test_0_7
 
     test_0_7= Test_0_7.objects.filter(consecutivo_registro__id_usuario=usuario).first()
 
@@ -700,8 +695,7 @@ def generar_reporte_excel(request):
     ws.cell(row=row_num, column=85, value=test_0_7.resultado_personal_social if  test_0_7 else "N/A")
     ws.cell(row=row_num, column=86, value=test_0_7.resultado_audicion_lenguaje if  test_0_7 else "N/A")
 
-     # Datos Test_Mayores_60
-
+    # Datos Test_Mayores_60
 
     test_mayores_60 = Test_Mayores_60.objects.filter(consecutivo_registro__id_usuario=usuario).first()
 

@@ -11,5 +11,4 @@ urlpatterns = [
  path('home/',home, name='home'), 
  #path('exportar-reporte/',exportar_registro_pacientes, name='exportar_reporte'),
  path('exportar-reporte/',generar_reporte_excel, name='exportar_reporte'),
- 
 ]

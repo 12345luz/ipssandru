@@ -1,10 +1,7 @@
 from django import forms
 from .models import *
 from django import forms
-
-from django import forms
-
-
+from datetime import date
 class AgudezaVisualForm(forms.ModelForm):
     class Meta:
         model = AgudezaVisual
@@ -16,6 +13,27 @@ class AgudezaVisualForm(forms.ModelForm):
         widgets = {
             'fecha_valoracion_agudeza_visual': forms.DateInput(attrs={'type': 'date'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        self.usuario = kwargs.pop('usuario', None)  # Pasar el usuario desde la vista
+        super().__init__(*args, **kwargs)
+
+    def clean_fecha_valoracion_agudeza_visual(self):
+        fecha_valoracion_agudeza_visual = self.cleaned_data.get('fecha_valoracion_agudeza_visual')
+
+        if self.usuario and self.usuario.fecha_nacimiento:
+            # Calcular la edad del usuario
+            today = date.today()
+            edad = today.year - self.usuario.fecha_nacimiento.year - (
+                (today.month, today.day) < (self.usuario.fecha_nacimiento.month, self.usuario.fecha_nacimiento.day)
+            )
+            
+            # Validar la fecha para usuarios menores de 3 años
+            if edad < 3 and fecha_valoracion_agudeza_visual != date(1845, 1, 1):
+                raise forms.ValidationError("Para usuarios menores de 3 años, la fecha debe ser 01-01-1845.")
+        
+        return fecha_valoracion_agudeza_visual
+
 
 class AnticoncepcionForm(forms.ModelForm):
     class Meta:
@@ -167,9 +185,6 @@ class  Test_0_7Form(forms.ModelForm):
         model=Test_0_7
         fields = '__all__'
         exclude = ['consecutivo_registro']
-
-
-   
 
 class  Test_Mayores_60Form(forms.ModelForm):
     class Meta:

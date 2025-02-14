@@ -1,7 +1,5 @@
-{% extends 'base.html' %}
-
-{% block title %}
-Crear Usuario - Mi Proyecto
+{% extends 'base.html' %} {% block title %}
+Registrar Pacientes - Mi iPS
 {% endblock %}
 
 {% block content %}
@@ -59,7 +57,7 @@ Crear Usuario - Mi Proyecto
                   data-bs-placement="right" 
                   data-bs-content="Si el usuario no tiene segundo apellido o no se tiene este dato, registre NONE en mayúscula sostenida." 
                   style="cursor: pointer;" 
-                  title="Información importante">
+                  title="Si el usuario no tiene segundo apellido o no se tiene este dato, registre NONE en mayúscula sostenida.">
                 </i>
               </label>
               {{ form.segundo_apellido.errors }}
@@ -87,7 +85,7 @@ Crear Usuario - Mi Proyecto
                 data-bs-placement="right" 
                 data-bs-content="Si el usuario no tiene segundo nombre o no se tiene este dato, registre NONE en mayúscula sostenida." 
                 style="cursor: pointer;" 
-                title="Información importante">
+                title="Si el usuario no tiene segundo nombre o no se tiene este dato, registre NONE en mayúscula sostenida.">
               </i>
               </label>
               {{ form.segundo_nombre.errors }}

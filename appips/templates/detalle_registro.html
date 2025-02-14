@@ -1,9 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles del Registro</title>
+
+    <!-- Incluye el CSS de Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Incluye el JS de Bootstrap y Popper.js -->
+    <style>
+        .fa-exclamation-circle {
+            cursor: pointer;
+            font-size: 1.2rem; /* Tamaño del ícono */
+        }
+    </style>
 </head>
 <body>
     <h1>Detalles del Usuario y Registro</h1>
@@ -51,24 +67,37 @@
         </fieldset>
 
         <fieldset id="fieldset-agudeza-visual" >
-            <legend>Agudeza Visual</legend>
+            <legend>Formulario Agudeza Visual</legend>
             {% if agudeza_visual %}
-                <p>Ojo izquierdo: {{ agudeza_visual.agudeza_visual_lejana_ojo_izquierdo }}</p>
+                <p>Ojo izquierdo: {{ agudeza_visual.agudeza_visual_lejana_ojo_izquierdo }}</p>                 
                 <p>Ojo derecho: {{ agudeza_visual.agudeza_visual_lejana_ojo_derecho }}</p>
                 <p>Fecha de valoración: {{ agudeza_visual.fecha_valoracion_agudeza_visual }}</p>
             {% else %}
+
+            <div>
+                <!-- Ícono con el popover -->
+                <i class="fas fa-exclamation-circle text-warning" 
+                   data-bs-toggle="popover" 
+                   data-bs-trigger="click" 
+                   data-bs-placement="right"
+                   data-bs-content="La opción 0 se usa en personas reportadas que no son objeto de la actividad. 
+                   La opción 21 se usa cuando no se indaga ni se tiene información con respecto a la identificación de este riesgo."
+                   style="cursor: pointer;" 
+                   title="La opción 0 se usa en personas reportadas que no son objeto de la actividad. 
+                   La opción 21 se usa cuando no se indaga ni se tiene información con respecto a la identificación de este riesgo.">
+                
+                </i>
+            </div>
                 <form method="post">
                     {% csrf_token %}
                     {{ form_agudeza_visual.as_p }}
-                    <button type="submit">Guardar Agudeza Visual</button>
+                    <button type="submit">Guardar</button>
                 </form>
             {% endif %}
         </fieldset>
-
-        </fieldset>
         
         <fieldset id="form_anticoncepción" >
-            <legend>Anticoncepción</legend>
+            <legend>Formulario Anticoncepción</legend>
             {% if anticoncepcion %}
                 <p>Fecha de atención: {{ anticoncepcion.fecha_atencion_asesoria_anticoncep }}</p>
                 <p>Método suministrado: {{ anticoncepcion.suministro_metodo_anticoceptivo }}</p>
@@ -77,15 +106,15 @@
             {% else %}
                 <form method="post">
                     {% csrf_token %}
-                    {{ form_anticoncepcionas.as_p }}
-                    <button type="submit">Guardar Anticoncepción</button>
+                    {{ form_anticoncepcion.as_p }}
+                    <button type="submit">Guardar</button>
                 </form>
             {% endif %}
         
         </fieldset>
 
         <fieldset>
-            <legend>CaCervix</legend>
+            <legend>Formulario CaCervix</legend>
             {% if ca_cervix %}
                 <p>Tratamiento Ablativo/Escisión: {{ ca_cervix.tratamiento_ablativo_escision }}</p>
                 <p>Tamizaje de Cáncer de Cuello Uterino: {{ ca_cervix.tamizaje_cancer_cuello_uterino }}</p>
@@ -104,7 +133,7 @@
         </fieldset>
 
         <fieldset id="form_ca_colon" >
-            <legend>Cancer de colon</legend>
+            <legend>Formulario Cáncer de colon</legend>
             {% if ca_colon %}
                 <p>Resultado de la prueba de sangre oculta en materia fecal: {{ ca_colon.resultado_prueba_sangre_oculta_mf }}</p>
                 <p>Resultado de colonoscopia tamizaje: {{ ca_colon.resultado_colonoscopia_tamizaje}}</p>
@@ -121,7 +150,7 @@
         </fieldset>
 
         <fieldset id="form_ca_prostata" >
-            <legend>Cancer de prostata</legend>
+            <legend>Formulario Cáncer de prostata</legend>
             {% if ca_prostata %}
                 <p>Resultado del tacto rectal: {{ ca_prostata.resultado_tacto_rectal }}</p>
                 <p>Fecha del tacto rectal: {{ ca_prostata.fecha_tacto_rectal}}</p>
@@ -138,7 +167,7 @@
         </fieldset>
       
         <fieldset id="form_ca_mama" >
-            <legend>Cancer de mama</legend>
+            <legend>Formulario Cáncer de mama</legend>
             {% if ca_mama %}
                 <p>Fecha de toma de mamografía: {{ ca_mama.fecha_toma_mamografia }}</p>
                 <p>Resultado de mamografía: {{ ca_mama.resultado_mamografia}}</p>
@@ -157,7 +186,7 @@
         </fieldset>
 
         <fieldset id="form_salud_bucal" >
-            <legend>Salud Bucal</legend>
+            <legend>Formulario Salud Bucal</legend>
             {% if salud_bucal %}
                 <p>Fecha de atención en salud bucal por profesional en odontología: {{ salud_bucal.fecha_atencion_salud_bucal }}</p>
                 <p>COP por persona: {{ salud_bucal.cop_por_persona}}</p>
@@ -171,7 +200,7 @@
         </fieldset>
 
         <fieldset id="form_gestacion" >
-            <legend>Gestacion</legend>
+            <legend>FFormulario Gestacion</legend>
             {% if gestacion %}
                 <p>: {{ gestacion.gestante }}</p>
                 <p>: {{ gestacion.acido_folico_preconcepcional}}</p>
@@ -194,9 +223,8 @@
             {% endif %}
         </fieldset>
 
-
         <fieldset id="form_gestacion_menores" >
-            <legend>formulario gestacion menores hasta siente meses</legend>
+            <legend>Formulario Gestación Menores Hasta Siente Meses</legend>
             {% if  gestacion_menores %}
                 <p>Fecha de atención: {{ gestacion_menores.fecha_atencion_promocion_apoyo_lactancia }}</p>
 
@@ -212,7 +240,7 @@
 
 
         <fieldset id="form_no_reporte" >
-            <legend>formulario No aplica para el reporte</legend>
+            <legend>Formulario No Aplica Para El Reporte</legend>
             {% if  no_reporte %}
 
             <p>Sífilis Gestacional o congénita:{{ no_reporte.sifilis_gestacional_congenita }}</p>
@@ -242,7 +270,7 @@
 
 
         <fieldset id="form_primera_infacia" >
-            <legend>formulario primera infacia</legend>
+            <legend>Formulario Primera Infacia</legend>
             {% if  primera_infacia %}
 
             <p>Suministro de  fortificación casera en la primera infancia (6 a 23 meses):{{ primera_infacia.Suministro_fortificacion_casera }}</p>
@@ -260,7 +288,7 @@
 
 
         <fieldset id="form_recien_nacido" >
-            <legend>formulario recien nacido</legend>
+            <legend>Formulario Recien Nacido</legend>
             {% if  recien_nacido %}
 
             <p>Resultado de tamizaje auditivo neonatal:{{ recien_nacido.resultado_tamizaje_auditivo_neonatal }}</p>
@@ -365,8 +393,6 @@
             {% endif %}
         </fieldset>
 
-
-
         <fieldset id="form_toda_poblacion" >
             <legend>Formulario Toda la población </legend>
             {% if toda_poblacion %}
@@ -385,7 +411,6 @@
             <p>Resultado de prueba para VIH:{{ toda_poblacion.resultado_prueba_vih}}</p>
             <p>Fecha de toma  de tamizaje hepatitis C:{{ toda_poblacion.fecha_tamizaje_hepatitis_c}}</p>
 
-
             {% else %}
                 <form method="post">
                     {% csrf_token %}
@@ -395,8 +420,6 @@
             {% endif %}
         </fieldset>
 
-
-
         <fieldset id="form_tuberculosis" >
             <legend>Formulario Tuberculosis</legend>
             {% if tuberculosis %}
@@ -405,7 +428,6 @@
             <p>Fecha de toma de baciloscopia diagnóstico:{{ tuberculosis.Fecha_baciloscopia}}</p>
             <p>Resultado de baciloscopia diagnóstico:{{ tuberculosis.Resultado_baciloscopia}}</p>
             
-
             {% else %}
                 <form method="post">
                     {% csrf_token %}
@@ -415,9 +437,17 @@
             {% endif %}
         </fieldset>
 
-
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                    return new bootstrap.Popover(popoverTriggerEl);
+                });
+            });
+        </script>
+        
 </body>
 
-
 </html>
+
+{% endblock %}
